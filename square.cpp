@@ -1,33 +1,124 @@
 #include <stdio.h>
 #include<math.h>
 
-#define DELTA 0.00001
-#define INF -1
+// #define DELTA 0.00001
 
-int solver(double a, double b, double c, double* x1, double* x2);  // Возвращает количество корней и корни
+const double DELTA = 1e-7;
+
+enum RootsNumber {
+    INF,
+    NULL_ANS,
+    ONE_ANS,
+    TWO_ANS
+};
+
+RootsNumber solve_square(double a, double b, double c, double* x1, double* x2);
+void input_coeff(double* coeff, char symbol);
+void output(int n_answer, double* x1, double* x2);
+bool is_null(double n);
+void go_to_new_str();
+
+
+
+struct SquareEquation {
+    double a;
+    double b;
+    double c;
+    double x1;
+    double x2;
+    //todo roots number
+};
+
 
 int main()
 {
     // ax^2 + bx + c = 0
-    double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
 
 
-    printf("Введите коэффициент при x^2, коэффициент при x, свободный коэффициент через пробел:\n");
-    scanf("%lf%lf%lf", &a, &b, &c);
-    printf("(%lf)x^2 + (%lf)x + (%lf) = 0\n\n", a, b, c);
+    struct my_square equation = {};
 
-    switch(solver(a, b, c, &x1, &x2))
+    input_coeff(&equation.a, 'a');
+    input_coeff(&equation.b, 'b');
+    input_coeff(&equation.c, 'c');
+
+    int n_answer = solve(equation.a, equation.b, equation.c, &equation.x1, &equation.x2);
+
+    output(n_answer, &equation.x1, &equation.x2);
+}
+
+
+
+
+
+void input_coeff(double* coeff, char symbol)
+{
+
+    printf("Введите коэффициент %c\n%c = ", symbol, symbol);
+
+
+    int flag = scanf("%lf", coeff);
+    while(flag == 0){
+        go_to_new_str();
+        printf("Ошибка. Введите коэффициент %c еще раз:\n", symbol);
+        flag = scanf("%lf", coeff);
+
+    }
+
+}
+
+
+
+
+
+RootsNumber solve(double a, double b, double c, double* x1, double* x2)
+{
+    // сравнение чисел с точкой!
+    if (is_null(a)){
+        if (is_null(b)){
+            if (is_null(c)) return INF;
+            else return NULL_ANS;
+        }
+        else{
+            *x1 = -c/b;
+            return ONE_ANS;
+        }
+    }
+    else{
+        double disc = b * b - 4 * a *c;
+        if (disc < 0) return NULL_ANS;
+        if ((disc - 0) < DELTA){
+            *x1 = -b/(2*a);
+            return ONE_ANS;
+        }
+        else{
+            double d_sqrt = sqrt(disc);
+            *x1 = (-b + d_sqrt)/(2*a);
+            *x2 = (-b - d_sqrt)/(2*a);
+            return TWO_ANS;
+        }
+
+
+    }
+}
+
+
+
+
+
+void output(int n_answer, double* x1, double* x2)
+{
+        switch(n_answer)
     {
-        case 0:
+        case NULL_ANS:
             printf("Корней нет\n");
             break;
 
-        case 1:
-            printf("Один корень x = %lg\n", x1);
+        case ONE_ANS:
+            printf("Один корень x = %lg\n", *x1);
             break;
 
-        case 2:
-            printf("Два корня: x1 = %lg, x2 = %lg\n", x1, x2);
+        case TWO_ANS:
+            printf("Два корня: x1 = %lg, x2 = %lg\n", *x1, *x2);
             break;
         case INF:
             printf("Корней бесконечное количество\n");
@@ -36,45 +127,23 @@ int main()
         default:
             printf("Что-то не то...");
     }
-
-
 }
 
 
 
 
-int solver(double a, double b, double c, double* x1, double* x2){
-    int n = 0;
 
-    // сравнение чисел с точкой!
-    if ((abs(a) - 0) < DELTA){
-        if ((abs(b) - 0) < DELTA){
-            if ((abs(c) - 0) < DELTA) return -1;
-            else return 0;
-        }
-        else{
-            *x1 = -c/b;
-            return 1;
-        }
-    }
-    else{
-        double disc = b * b - 4 * a *c;
-        if (disc < 0) return 0;
-        if ((disc - 0) < DELTA){
-            *x1 = -b/(2*a);
-            *x2 = -b/(2*a);
-            return 1;
-        }
-        else{
-            double d_sqrt = sqrt(disc);
-            *x1 = (-b + d_sqrt)/(2*a);
-            *x2 = (-b - d_sqrt)/(2*a);
-            return 2;
-        }
-
-
-    }
+bool is_null(double n)
+{
+    if ((abs(n)) < DELTA) return true;
+    return false;
 }
 
 
 
+
+
+void go_to_new_str()
+{
+    while(getchar() != '\n') continue;
+}
