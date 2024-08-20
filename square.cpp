@@ -184,7 +184,10 @@ RootsNumber solve_linear(double k, double b, double* x1)
 
 void run_tests()
 {
-    for(int i = 0; i < 4; i++)
+
+    int len_mas = sizeof(test_massiv_Square)/sizeof(SquareEquation);
+
+    for(int i = 0; i < len_mas; i++)
     {
         struct SquareEquation now_sq = test_massiv_Square[i];
         struct SquareEquation now_sq_copy = test_massiv_Square[i];
