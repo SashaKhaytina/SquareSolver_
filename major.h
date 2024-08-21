@@ -1,6 +1,5 @@
 #ifndef MAJOR_H
 #define MAJOR_H
-
 const double DELTA = 1e-7;
 
 enum RootsNumber 
@@ -36,7 +35,7 @@ struct SquareEquation
 };
 
 AnyErrors solve_square(SquareEquation* equation);
-bool input_coeff(double* coeff, char symbol);
+void input_coeff(double* coeff, char symbol);
 bool input_coeffs(SquareEquation* equation);
 void output_roots(SquareEquation* equation);
 bool is_null(double n);
