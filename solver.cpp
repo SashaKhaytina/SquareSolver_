@@ -12,7 +12,8 @@ static ProgramStatus solve_linear(double k, double b, double* x1, RootsNumber* r
 
 static bool is_null(double n)
 {
-    if (abs(n) < DELTA) return true;
+    if (abs(n) < DELTA) 
+        return true;
     return false;
 }
 

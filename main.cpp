@@ -6,6 +6,7 @@
 #include "solver.h"
 #include "io.h"
 #include "tester.h"
+
 #define TEST 
 
 int main()

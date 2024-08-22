@@ -19,6 +19,7 @@ const SquareEquation TESTS[] = {
     {1, -5, -1, 5.19258, -0.192582, TWO_ROOTS}
 };
 
+
 static void print_test_result(const SquareEquation* expected, SquareEquation* test, int test_number, CheckTest checker)
 {
     assert(expected);
@@ -46,7 +47,7 @@ static CheckTest run_test(const SquareEquation* expected, SquareEquation* test)
 
     if (check_x1 && check_x2 && check_roots_num) 
         return TEST_OK;
-    else
+    else 
         return TEST_ERROR;
 }
 
@@ -64,5 +65,4 @@ void run_all_tests()
 
     }
 }
-
 //
