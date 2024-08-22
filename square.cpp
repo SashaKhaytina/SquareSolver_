@@ -21,11 +21,8 @@ int main()
 
     struct SquareEquation equation = {};
 
-    if (!input_coeffs(&equation))
-    {
-        printf("Недостаточно правильных коэффициентов. Запустите заново\n");
-        return 0;
-    }
+    input_coeffs(&equation);
+
 
     solve_square(&equation); 
 
@@ -36,7 +33,7 @@ int main()
     return 0;
 }
 
-bool input_coeffs(SquareEquation* equation)
+void input_coeffs(SquareEquation* equation)
 {
     assert(equation);
 
@@ -59,7 +56,7 @@ bool input_coeffs(SquareEquation* equation)
     //     return false;
     // }
 
-    return true;
+    // return true;
 }
 
 // bool input_coeff(double* coeff, char symbol)
