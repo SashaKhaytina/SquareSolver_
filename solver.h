@@ -4,6 +4,6 @@
 #include "major.h"
 
 ProgramStatus solve_square(SquareEquation* equation);
-bool is_equally(double a, double b);
+void run_solver();
 
 #endif

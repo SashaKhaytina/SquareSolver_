@@ -1,40 +1,34 @@
 #include <stdio.h>
+#include <stdlib.h> 
 #include <assert.h>
+
 #include "major.h"
 #include "solver.h"
 #include "tester.h"
-
-static void print_test_result(const SquareEquation* expected, SquareEquation* test, int test_number, CheckTest checker);
-static CheckTest run_test(const SquareEquation* expected, SquareEquation* test);
-
-
-const SquareEquation TESTS[] = {
-    {0, 0, 0, 0, 0, INF_ROOTS}, 
-    {1, 3, 2, -1, -2, TWO_ROOTS}, 
-    {0, 7, 0, 0, 0, ONE_ROOTS}, 
-    {1, 1, 1, 0, 0, ZERO_ROOTS},
-    {0, 7, 0, 5, 5, TWO_ROOTS},
-    {7, 0, 7, 0, 0, ZERO_ROOTS},
-    {2, -7, 3, 3, 0.5, TWO_ROOTS},
-    {1, -5, -1, 5.19258, -0.192582, TWO_ROOTS}
-};
+#include "colors.h"
+#include "utils.h"
 
 
-static void print_test_result(const SquareEquation* expected, SquareEquation* test, int test_number, CheckTest checker)
+static void print_test_result(SquareEquation* expected, SquareEquation* test, int test_number, CheckTest checker);
+static CheckTest run_test(SquareEquation* expected, SquareEquation* test);
+
+
+static void print_test_result(SquareEquation* expected, SquareEquation* test, int test_number, CheckTest checker)
 {
     assert(expected);
+    assert(test);
 
-    if (checker) printf("Test %d - OK\n", test_number);
+    if (checker) GREEN("Test %d - OK\n", test_number);
     else
     {
-        printf("Test %d - ERROR\nError test: x1 = %lg, x2 = %lg, nRoots = %d\n"
+        RED("Test %d - ERROR\nError test: x1 = %lg, x2 = %lg, nRoots = %d\n"
            "Expected: x1 = %lg, x2 = %lg, nRoots = %d\n", 
            test_number, test->x1, test->x2, test->roots_num, expected->x1, expected->x2, expected->roots_num);
     }
 
 }
 
-static CheckTest run_test(const SquareEquation* expected, SquareEquation* test)
+static CheckTest run_test(SquareEquation* expected, SquareEquation* test)
 {
     assert(expected);
     assert(test);
@@ -51,18 +45,31 @@ static CheckTest run_test(const SquareEquation* expected, SquareEquation* test)
         return TEST_ERROR;
 }
 
-void run_all_tests()
+ProgramStatus run_all_tests()
 {
-    int quantity_tests = sizeof(TESTS) / sizeof(SquareEquation);
-
-    for (int test_number = 0; test_number < quantity_tests; test_number++)
+    // инициализация 
+    FILE* file = NULL;
+    if (open_file(&file) == ERROR_OPENING_FILE)
     {
-        const SquareEquation* test_i = &(TESTS[test_number]);
-        SquareEquation test = {test_i->a, test_i->b, test_i->c, 0, 0, ZERO_ROOTS};
-
-        CheckTest checker = run_test(test_i, &test);
-        print_test_result(test_i, &test, test_number + 1, checker);
-
+        RED("Файл не удалось прочитать.\n");
+        return ERROR_OPENING_FILE;
     }
+
+    int counter = 0;
+    double a = 0, b = 0, c = 0;
+    double x1 = 0, x2 = 0;
+    RootsNumber roots_num = ZERO_ROOTS;
+
+    while (fscanf(file, "%lf %lf %lf %lf %lf %d", &a, &b, &c, &x1, &x2, (int*) &roots_num) != EOF)
+    {
+
+        SquareEquation test_ref = {a, b, c, x1, x2, roots_num}; // Образец
+        SquareEquation test = {a, b, c}; // Проверка 
+
+        CheckTest checker = run_test(&test_ref, &test);
+        print_test_result(&test_ref, &test, counter + 1, checker);
+        counter++;
+    }
+    fclose(file);
+    return OK;
 }
-//

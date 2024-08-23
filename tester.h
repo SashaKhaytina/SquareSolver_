@@ -9,6 +9,6 @@ enum CheckTest
     TEST_OK
 };
 
-void run_all_tests();
+ProgramStatus run_all_tests();
 
 #endif

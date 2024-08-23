@@ -4,24 +4,11 @@
 
 #include "major.h"
 #include "solver.h"
+#include "io.h"
+#include "utils.h"
 
-static bool is_null(double n);
+
 static ProgramStatus solve_linear(double k, double b, double* x1, RootsNumber* roots_num);
-
-
-
-static bool is_null(double n)
-{
-    if (abs(n) < DELTA) 
-        return true;
-    return false;
-}
-
-
-bool is_equally(double a, double b)
-{
-    return (abs(a - b) < DELTA); 
-}
 
 
 static ProgramStatus solve_linear(double k, double b, double* x1, RootsNumber* roots_num)
@@ -70,6 +57,7 @@ ProgramStatus solve_square(SquareEquation* equation)
     else if (is_null(disc))
     {
         *x1 = -b / (2*a);
+        if (is_null(*x1)) *x1 = abs(*x1);
         equation->roots_num = ONE_ROOTS;
     }
     else
@@ -78,8 +66,21 @@ ProgramStatus solve_square(SquareEquation* equation)
         double d_sqrt = sqrt(disc);
         *x1 = (-b + d_sqrt) / (2*a);
         *x2 = (-b - d_sqrt) / (2*a);
+        if (is_null(*x1)) *x1 = abs(*x1);
+        if (is_null(*x2)) *x2 = abs(*x2);
         equation->roots_num = TWO_ROOTS;
     }
     
     return OK;
 }
+
+
+void run_solver()
+{
+    struct SquareEquation equation = {};
+
+    input_coeffs(&equation);
+    solve_square(&equation); 
+    output_roots(&equation);
+}
+
