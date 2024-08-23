@@ -1,4 +1,5 @@
 // doxygen and doxywisard
+//man doxywizard
 
 #include <stdio.h>
 #include <math.h>
@@ -21,6 +22,7 @@ void command_error();
 int main(int argc, const char *argv[])
 {
     // ax^2 + bx + c = 0
+    /// какой то капец
 
     run_programm(argc, argv);
 }

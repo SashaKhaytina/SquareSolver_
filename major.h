@@ -15,6 +15,10 @@ enum NumArguments
     TWO_ARG
 };
 
+/**
+ * @brief количества корней
+ */
+
 enum RootsNumber 
 {
     INF_ROOTS = -1,
