@@ -1,8 +1,17 @@
+/*!
+ * \file
+ * \brief Файл, в котором реализуется ввод и вывод.
+ * 
+ * В этом файле собраны функции, в которых реализованы ввод и вывод в консоль.
+ * Они используются в режиме проверки через терминал.
+ */
+
+
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
 
-#include "major.h"
+
 #include "io.h"
 #include "colors.h"
 #include "utils.h"
@@ -10,17 +19,18 @@
 
 static void input_coeff(double* coeff, char symbol);
 
-
+// scanf не поможет
+// fgets, strtod, ... - ПРИЛОЖЕНИЕ Б К&R
 static void input_coeff(double* coeff, char symbol)
 {
     assert(coeff);
 
-    CYAN("Введите коэффициент %c\n%c = ", symbol, symbol);
+    PRINTF_CYAN("Введите коэффициент %c\n%c = ", symbol, symbol);
 
     while (scanf("%lf", coeff) != 1) 
     {
         clear_buffer();
-        RED("Ошибка. Введите коэффициент %c еще раз:\n", symbol);
+        PRINTF_RED("Ошибка. Введите коэффициент %c еще раз:\n", symbol);
     }
 
     clear_buffer();
@@ -36,7 +46,7 @@ void input_coeffs(SquareEquation* equation)
     input_coeff(&(equation->c), 'c');
 }
 
-
+// Добавить const! См io.h
 void output_roots(SquareEquation* equation)
 {
     assert(equation);
@@ -44,23 +54,23 @@ void output_roots(SquareEquation* equation)
     switch(equation->roots_num)
     {
     case ZERO_ROOTS:
-        YELLOW("Корней нет\n");
+        PRINTF_YELLOW("Корней нет\n");
         break;
 
     case ONE_ROOTS:
-        YELLOW("Один корень x = %lg\n", equation->x1);
+        PRINTF_YELLOW("Один корень x = %lg\n", equation->x1);
         break;
 
     case TWO_ROOTS:
-        YELLOW("Два корня: x1 = %lg, x2 = %lg\n", equation->x1, equation->x2);
+        PRINTF_YELLOW("Два корня: x1 = %lg, x2 = %lg\n", equation->x1, equation->x2);
         break;
 
     case INF_ROOTS:
-        YELLOW("Корней бесконечное количество\n");
+        PRINTF_YELLOW("Корней бесконечное количество\n");
         break;
 
     default:
-        RED("Что-то не то...");
+        PRINTF_RED("Что-то не то...");
         break;
     }
 }

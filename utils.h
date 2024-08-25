@@ -1,12 +1,61 @@
-#ifndef UTILS
+#ifndef UTILS // FIXME: _H
 #define UTILS
 
 #include <stdio.h>
-#include "major.h"
+#include "status.h"
 
+
+const double DELTA = 1e-5;    /*!< Значение погрешности. */ // В utils.h
+
+/*!
+ * \brief Функция, которая проверяет равно ли число типа double 0.
+ * 
+ * Возвращает true, если число равно 0, и false, если не равно (с учетом погрешности).
+ * \param[in] n - число типа double, для которого происходит проверка.
+ * \return Возвращает переменную типа bool.
+ */
 bool is_null(double n);
-bool is_equally(double a, double b);
-ProgramStatus open_file(FILE **file);
+
+
+/*!
+ * \brief Функция, которая проверяет равнество своих аргументов типа double.
+ * 
+ * Возвращает true, если числа равны, и false, если не равны (с учетом погрешности).
+ * \param[in] a - первый аргумент типа double.
+ * \param[in] b - второй аргумент типа double.
+ * \return Возвращает переменную типа bool.
+ */
+
+bool are_equal(double a, double b);
+
+
+/*!
+ * \brief Функция, которая сравнивает число типа double с 0.
+ * 
+ * Функция сравнивает число типа double с 0 с учетом погрешности. 
+ * Если число больше 0, функция вернет 1 \n
+ * Если число равно 0, функция вернет 0 \n
+ * Если число меньше 0, функция вернет -1 \n 
+ * \param[in] a - число типа double, которое сравнивается с 0.
+ * \return Возвращает переменную типа int.
+ */
+int get_sign_double(double a);
+
+
+/*!
+ * \brief Функция, которая открывает переданный файл для чтения.
+ * 
+ * \param[out] file - файл, открываемй для чтения.
+ * \return Возвращает переменную типа ProgramStatus, которая показывает успешность открытия файла (ОК или какая-либо ошибка).
+ */
+ProgramStatus open_file(FILE **file, const char* file_name, const char* format);
+
+
+/*!
+ * \brief Функция, которая очищает буфер.
+ * 
+ * Перемещает курсор на положение, которое находится сразу после близжайшего '\\n'.
+ */
 void clear_buffer();
 
 #endif
