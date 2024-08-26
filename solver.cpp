@@ -1,6 +1,6 @@
 /*!
  * \file
- * \brief Файл с функциями для рассчетов.
+ * \brief Файл с функциями для рассчетов (описание).
  * 
  * В данном файле собраны функции, в которых производится решение квадратного уравнения.
  */
@@ -10,13 +10,14 @@
 #include <math.h>
 #include <assert.h>
 
-#include "status.h"
+#include "errors.h"
 #include "solver.h"
 #include "io.h"
 #include "utils.h"
 
 
 static ProgramStatus solve_linear(double k, double b, double* x1, RootsNumber* roots_num);
+
 
 
 static ProgramStatus solve_linear(double k, double b, double* x1, RootsNumber* roots_num)
@@ -30,15 +31,32 @@ static ProgramStatus solve_linear(double k, double b, double* x1, RootsNumber* r
     if (is_null(k))
     {
         if (is_null(b)) *roots_num = INF_ROOTS;
-        else *roots_num = ZERO_ROOTS;
+        else            *roots_num = ZERO_ROOTS;
     }
     else 
     {
         *x1 = -b/k;
-        if (is_null(*x1)) *x1 = abs(*x1);
+        if (is_null(*x1)) *x1 = fabs(*x1);
         *roots_num = ONE_ROOTS;
     }
     return OK;
+}
+
+
+ProgramStatus type_solve(SquareEquation* equation)
+{
+    assert(equation);
+
+    if (!isfinite(equation->a)) return INVALID_COEFF_A;
+
+    if (is_null(equation->a))
+    {
+        return solve_linear(equation->b, equation->c, &equation->x1, &(equation->roots_num)); 
+    }
+    else
+    {
+        return solve_square(equation);
+    }
 }
 
 
@@ -57,14 +75,8 @@ ProgramStatus solve_square(SquareEquation* equation)
     if (!isfinite(c)) return INVALID_COEFF_C;
 
 
-    if (is_null(a))
-    {
-        return solve_linear(b, c, x1, &(equation->roots_num)); 
-    }
-    
     double disc = b * b - 4 * a *c;
 
-    // codestyle
     if (get_sign_double(disc) < 0) 
     {
         equation->roots_num = ZERO_ROOTS;
@@ -83,22 +95,27 @@ ProgramStatus solve_square(SquareEquation* equation)
         equation->roots_num = TWO_ROOTS;
     }
 
-    if (is_null(*x1)) *x1 = abs(*x1);
-    if (is_null(*x2)) *x2 = abs(*x2);
+    if (is_null(*x1)) *x1 = fabs(*x1);
+    if (is_null(*x2)) *x2 = fabs(*x2);
 
 
     return OK;
 }
 
 
-// FIXME: ProgramStatus
-void run_solver()
+ProgramStatus run_solver()
 {
     struct SquareEquation equation = {};
+    ProgramStatus status = OK;
+
 
     input_coeffs(&equation);
-    // А проверить ошибку??? FIXME:
-    solve_square(&equation); 
+    status = type_solve(&equation);
+
+    if (status != OK) return status;
+    
     output_roots(&equation);
+    return status;
+
 }
 

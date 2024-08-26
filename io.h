@@ -1,7 +1,14 @@
+/*!
+ * \file
+ * \brief Файл, в котором заданы функции для ввода и вывода.
+ */
+
+
 #ifndef MAJOR_IO_H
 #define MAJOR_IO_H
 
 #include "solver.h"
+
 
 /*!
  * \brief Функция, которая производит ввод коэффициентов квадратного уравнения через командную строку.
@@ -10,12 +17,12 @@
  */
 void input_coeffs(SquareEquation* equation);
 
+
 /*!
  * \brief Функция, которая производит вывод посчитанных корней уравнений и их количества в командную строку.
  * 
  * \param[in] equation - это структура квадратного уравнения, для котоорого выводятся ответы и их количество. 
  */
-// FIXME: Добавить const! Сюда не очень, так как придется создавать новую const-структуру
-void output_roots(SquareEquation* equation);
+void output_roots(const SquareEquation* equation);
 
 #endif

@@ -1,6 +1,6 @@
 /*!
  * \file
- * \brief Вспомогательные функции.
+ * \brief Вспомогательные функции (описание).
  */
 
 
@@ -10,22 +10,19 @@
 #include <math.h>
 #include <assert.h>
 
-#include "status.h"
-#include "colors.h"
-
+#include "errors.h"
 
 
 bool is_null(double n)
 {
-    if (abs(n) < DELTA) 
-        return true;
-    return false;
+    return are_equal(n, 0);
 }
 
 
 bool are_equal(double a, double b)
 {
-    return (abs(a - b) < DELTA); 
+
+    return (fabs(a - b) < DELTA); 
 }
 
 
@@ -41,21 +38,24 @@ ProgramStatus open_file(FILE **file, const char* file_name, const char* format)
 }
 
 
-void clear_buffer()
+bool clear_buffer()
 {
     int c = 0;
-    while ((c = getchar()) != '\n')
+    int flag = 0;
+    
+    while ((c = getchar()) != '\n' && c != EOF)
     {
-        if (c == EOF) break;
+        if (c != '\n' && c != '\t' && c != ' ') flag = 1;
         continue;
-
     }
+    if (flag) return false;
+    return true;
 }
 
 
 int get_sign_double(double a)
 {
-    if (a < (-DELTA)) return -1;
+    if (a < (-DELTA))   return -1;
     else if (a > DELTA) return 1;
-    else return 0;
+    else                return 0;
 }

@@ -1,11 +1,25 @@
-#ifndef UTILS // FIXME: _H
-#define UTILS
+/*!
+ * \file
+ * \brief Вспомогательные функции.
+ */
+
+
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <stdio.h>
-#include "status.h"
+#include "errors.h"
+
+#define PRINTF_RED(string, ...)     printf("\x1b[31m" string "\x1b[0m", ##__VA_ARGS__)    /*!< Печать текста красным цветом. */
+#define PRINTF_GREEN(string, ...)   printf("\x1b[32m" string "\x1b[0m", ##__VA_ARGS__)    /*!< Печать текста зеленым цветом. */
+#define PRINTF_YELLOW(string, ...)  printf("\x1b[33m" string "\x1b[0m", ##__VA_ARGS__)    /*!< Печать текста желтым цветом. */
+#define PRINTF_BLUE(string, ...)    printf("\x1b[34m" string "\x1b[0m", ##__VA_ARGS__)    /*!< Печать текста синим цветом. */
+#define PRINTF_MAGENTA(string, ...) printf("\x1b[35m" string "\x1b[0m", ##__VA_ARGS__)    /*!< Печать текста цветом маджента. */
+#define PRINTF_CYAN(string, ...)    printf("\x1b[36m" string "\x1b[0m", ##__VA_ARGS__)    /*!< Печать текста цветом циан. */
 
 
-const double DELTA = 1e-5;    /*!< Значение погрешности. */ // В utils.h
+const double DELTA = 1e-5;    /*!< Значение погрешности. */
+
 
 /*!
  * \brief Функция, которая проверяет равно ли число типа double 0.
@@ -25,7 +39,6 @@ bool is_null(double n);
  * \param[in] b - второй аргумент типа double.
  * \return Возвращает переменную типа bool.
  */
-
 bool are_equal(double a, double b);
 
 
@@ -54,8 +67,12 @@ ProgramStatus open_file(FILE **file, const char* file_name, const char* format);
 /*!
  * \brief Функция, которая очищает буфер.
  * 
- * Перемещает курсор на положение, которое находится сразу после близжайшего '\\n'.
+ * Перемещает курсор на положение, которое находится сразу после близжайшего '\\n' Перемещая, отслеживает, встречались ли сторонник символы
+ * (не пробелы).
+ * 
+ * \return Возвращает переменную типа bool. (true - если не встречала, false - если встречала).
  */
-void clear_buffer();
+bool clear_buffer();
+
 
 #endif

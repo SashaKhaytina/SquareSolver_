@@ -1,6 +1,6 @@
 /*!
  * \file
- * \brief Файл, в котором реализуется ввод и вывод.
+ * \brief Файл, в котором реализуется ввод и вывод (описание).
  * 
  * В этом файле собраны функции, в которых реализованы ввод и вывод в консоль.
  * Они используются в режиме проверки через терминал.
@@ -11,29 +11,35 @@
 #include <math.h>
 #include <assert.h>
 
-
 #include "io.h"
-#include "colors.h"
 #include "utils.h"
 
 
 static void input_coeff(double* coeff, char symbol);
 
-// scanf не поможет
-// fgets, strtod, ... - ПРИЛОЖЕНИЕ Б К&R
+
+
 static void input_coeff(double* coeff, char symbol)
 {
     assert(coeff);
 
     PRINTF_CYAN("Введите коэффициент %c\n%c = ", symbol, symbol);
+    
 
-    while (scanf("%lf", coeff) != 1) 
+    while (true) 
     {
-        clear_buffer();
-        PRINTF_RED("Ошибка. Введите коэффициент %c еще раз:\n", symbol);
-    }
+        int n_doubles = scanf("%lf", coeff);
+        bool is_buffer_clear = clear_buffer();
 
-    clear_buffer();
+        if (!(is_buffer_clear && n_doubles))
+        {
+            PRINTF_RED("Ошибка. Введите коэффициент %c еще раз:\n", symbol);
+        }
+        else
+        {
+            break;
+        }
+    }
 }
 
 
@@ -46,8 +52,8 @@ void input_coeffs(SquareEquation* equation)
     input_coeff(&(equation->c), 'c');
 }
 
-// Добавить const! См io.h
-void output_roots(SquareEquation* equation)
+
+void output_roots(const SquareEquation* equation)
 {
     assert(equation);
 

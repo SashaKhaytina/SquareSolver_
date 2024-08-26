@@ -1,9 +1,19 @@
+/*!
+ * \file
+ * \brief Файл с функциями для рассчетов.
+ */
+
+
 #ifndef MAJOR_SOLVER_H
 #define MAJOR_SOLVER_H
 
-#include "status.h"
+#include "errors.h"
 
 
+/*! Тип перечисление.
+ * 
+ *  Перечисление возможных количеств действительных корней уравнения.
+ */
 enum RootsNumber 
 {
     INF_ROOTS = -1,    /*!< Означает бесконечное количество корней. */
@@ -30,14 +40,12 @@ struct SquareEquation
 /*!
  * \brief Функция, которая считает корни квадратного уравнения
  * 
- * Функция рассматривает так же случай, когда уравнение линейное
- * 
  * \param[out] equation - структура квадратного уравнения
- * \see solve_linear(double k, double b, double* x1, RootsNumber* roots_num)
  * \see bool is_null(double n)
  * \return Возвращает успешность выполнения (ОК или какая-либо ошибка)
  */
 ProgramStatus solve_square(SquareEquation* equation);
+
 
 /*!
  * \brief Функция, которая запускает функции для режима проверки через терминал.
@@ -47,7 +55,18 @@ ProgramStatus solve_square(SquareEquation* equation);
  * \see input_coeffs(&equation)
  * \see solve_square(&equation)
  * \see output_roots(&equation)
+ * \return Возвращает успешность выполнения (ОК или какая-либо ошибка)
  */
-void run_solver();
+ProgramStatus run_solver();
+
+
+/*!
+ * \brief Функция, которая определяет тип уравнения (линейное или квадратное).
+ * 
+ * \see solve_square(&equation)
+ * \see solve_linear(double k, double b, double* x1, RootsNumber* roots_num)
+ * \return Возвращает успешность выполнения (ОК или какая-либо ошибка)
+ */
+ProgramStatus type_solve(SquareEquation* equation);
 
 #endif
