@@ -16,7 +16,7 @@
 
 ProgramStatus run_programm(int argc, const char *argv[])
 {
-    if (argc == 2) 
+    if (argc == 2)
     {
         if      (strcmp(argv[1], TEST)   == 0) return run_all_tests();
         else if (strcmp(argv[1], SOLVER) == 0) return run_solver();
@@ -30,9 +30,8 @@ ProgramStatus run_programm(int argc, const char *argv[])
 
 ProgramStatus help_mode()
 {
-    PRINTF_YELLOW("Чтобы запустить автоматическую проверку напишите: ./square test\n");
-    PRINTF_YELLOW("Чтобы запустить ручную проверку напишите: ./square solver\nИли: ./square\n");
-    PRINTF_YELLOW("Чтобы запустить автоматическую проверку напишите: ./square test\n");
+    PRINTF_YELLOW("Чтобы запустить автоматическую проверку напишите: ./square --test\n");
+    PRINTF_YELLOW("Чтобы запустить ручную проверку напишите: ./square --solver\nИли: ./square\n");
     return OK;
 }
 

@@ -21,8 +21,7 @@ bool is_null(double n)
 
 bool are_equal(double a, double b)
 {
-
-    return (fabs(a - b) < DELTA); 
+    return (fabs(a - b) < DELTA);
 }
 
 
@@ -31,7 +30,7 @@ ProgramStatus open_file(FILE **file, const char* file_name, const char* format)
     assert(file);
     assert(file_name);
     assert(format);
-    
+
     *file = fopen(file_name, format);
     if (*file == NULL) return ERROR_OPENING_FILE;
     return OK;
@@ -41,15 +40,14 @@ ProgramStatus open_file(FILE **file, const char* file_name, const char* format)
 bool clear_buffer()
 {
     int c = 0;
-    int flag = 0;
-    
+    bool flag = true;
+
     while ((c = getchar()) != '\n' && c != EOF)
     {
-        if (c != '\n' && c != '\t' && c != ' ') flag = 1;
-        continue;
+        if (c != '\t' && c != ' ') flag = false;
     }
-    if (flag) return false;
-    return true;
+
+    return flag;
 }
 
 

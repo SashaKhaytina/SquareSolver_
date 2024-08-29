@@ -105,7 +105,7 @@ ProgramStatus solve_square(SquareEquation* equation)
 
 ProgramStatus run_solver()
 {
-    struct SquareEquation equation = {};
+    struct SquareEquation equation = {0};
     ProgramStatus status = OK;
 
 
