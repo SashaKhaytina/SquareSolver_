@@ -24,7 +24,7 @@ ProgramStatus run_programm(int argc, const char *argv[])
         else                                   return command_error();
     }
     else if (argc == 1) return run_solver();
-    else                      return command_error();
+    else                return command_error();
 }
 
 

@@ -1,7 +1,7 @@
 /*!
  * \file
  * \brief Файл, в котором реализуется ввод и вывод (описание).
- * 
+ *
  * В этом файле собраны функции, в которых реализованы ввод и вывод в консоль.
  * Они используются в режиме проверки через терминал.
  */
@@ -24,9 +24,9 @@ static void input_coeff(double* coeff, char symbol)
     assert(coeff);
 
     PRINTF_CYAN("Введите коэффициент %c\n%c = ", symbol, symbol);
-    
 
-    while (true) 
+
+    while (true)
     {
         int n_doubles = scanf("%lf", coeff);
         bool is_buffer_clear = clear_buffer();

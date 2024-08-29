@@ -40,14 +40,14 @@ ProgramStatus open_file(FILE **file, const char* file_name, const char* format)
 bool clear_buffer()
 {
     int c = 0;
-    bool flag = true;
+    bool was_something_bad = true;
 
     while ((c = getchar()) != '\n' && c != EOF)
     {
-        if (c != '\t' && c != ' ') flag = false;
+        if (c != '\t' && c != ' ') was_something_bad = false;
     }
 
-    return flag;
+    return was_something_bad;
 }
 
 
